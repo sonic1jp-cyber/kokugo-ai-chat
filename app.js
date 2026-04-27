@@ -13,11 +13,31 @@ window.addEventListener('DOMContentLoaded',function(){
 
 function loadState(){
   try{
-    var s=ss_get('airns_messages');
-    if(s){messages=JSON.parse(s);if(messages.length>0)renderAllMessages()}
+    // メッセージはリロードで常にリセット（トップ画面に戻る）
+    messages=[];
+    ss_set('airns_messages','[]');
+    // プロフィールのみ復元
     var p=ss_get('airns_profile');
     if(p){userProfile=JSON.parse(p);restoreProfileUI()}
   }catch(e){}
+}
+
+function resetChat(){
+  messages=[];
+  ss_set('airns_messages','[]');
+  isLoading=false;
+  var c=document.getElementById('chat');
+  var w=document.getElementById('welcome');
+  // welcome要素が削除されている場合は再構築
+  if(!w){location.reload();return}
+  // 既存のメッセージとエラーを削除（welcome以外の子要素）
+  Array.from(c.children).forEach(function(child){
+    if(child.id!=='welcome')child.remove();
+  });
+  w.style.display='';
+  document.getElementById('msg-input').value='';
+  document.getElementById('msg-input').style.height='auto';
+  document.getElementById('send-btn').disabled=false;
 }
 
 function saveState(){
