@@ -1,4 +1,4 @@
-const CACHE_NAME = 'airns-v3';
+const CACHE_NAME = 'airns-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -25,7 +25,7 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   // API calls: network only
-  if (e.request.url.includes('api.anthropic.com')) return;
+  if (e.request.url.includes('/api/')) return;
 
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))

@@ -105,7 +105,7 @@ header .subtitle{font-size:10.5px;color:rgba(255,255,255,.75);font-weight:400}
       <div class="logo-icon"><img src="Xx0hOZHH_400x400 (4).jpg" alt="NS"></div>
       <div><h1>中学受験の国語</h1><div class="subtitle">@オンライン家庭教師</div></div>
     </div>
-    <div class="usage-badge" id="usage-badge" onclick="openSettings()">残り質問回数 10/10</div>
+    <div class="usage-badge" id="usage-badge">残り質問回数 10/10</div>
   </header>
   <div id="chat">
     <div id="welcome">
@@ -149,7 +149,6 @@ header .subtitle{font-size:10.5px;color:rgba(255,255,255,.75);font-weight:400}
     <div class="ai-disclaimer">AIによる回答のため、誤りを含む可能性があります。重要な判断の際は、必ず専門家にご確認ください。</div>
   </div>
 </div>
-<div class="modal-overlay" id="settings-modal"><div class="modal"><h2>API設定</h2><label>Anthropic API Key</label><input type="password" id="api-key-input" placeholder="sk-ant-..."><div class="btn-row"><button class="btn-cancel" onclick="closeSettings()">キャンセル</button><button class="btn-save" onclick="saveSettings()">保存</button></div></div></div>
 <div class="modal-overlay" id="plan-modal"><div class="modal"><h2>もっと相談したい方へ</h2><p style="font-size:13.5px;color:#9a9487;line-height:1.6">無料プランの質問回数を使い切りました。<br>有料プランにすると、もっとたくさん相談できます。</p><div class="plan-cards"><div class="plan-card" onclick="selectPlan('basic')"><div class="plan-name">ベーシック</div><div class="plan-price">月額 680円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">月100回まで質問OK。日常的な学習相談に。</div></div><div class="plan-card recommended" onclick="selectPlan('premium')"><div class="plan-badge">おすすめ</div><div class="plan-name">プレミアム</div><div class="plan-price">月額 1,980円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">月1,000回まで質問OK。受験期のお子さんに。</div></div></div><p class="plan-note">※ 決済機能は現在準備中です</p><div class="btn-row" style="margin-top:12px"><button class="btn-cancel" onclick="closePlanModal()">閉じる</button></div></div></div>
 <div class="modal-overlay" id="consultation-modal"><div class="modal"><h2>NS本人とのオンライン相談</h2><p style="font-size:13.5px;color:#9a9487;line-height:1.6;margin-bottom:12px">お子さんの解いている姿を見ながら、具体的な改善ポイントをお伝えします。Zoom（オンライン）で実施します。</p><div class="plan-cards"><div class="plan-card" onclick="selectConsultation('short')"><div class="plan-name">スポット相談</div><div class="plan-price">30分 5,000円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">今困っていることへのアドバイスがメインです。</div></div><div class="plan-card" onclick="selectConsultation('long')"><div class="plan-name">じっくり相談</div><div class="plan-price">60分 8,800円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">現状分析から、具体的な学習プランのご提案まで行います。</div></div></div><p class="plan-note">※ 申し込みフォームは準備中です</p><div class="btn-row" style="margin-top:12px"><button class="btn-cancel" onclick="closeConsultationModal()">閉じる</button></div></div></div>
 <script src="app.js"></script>
