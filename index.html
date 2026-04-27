@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4a7c6f">
+<link rel="manifest" href="manifest.json">
+<title>中学受験の国語@オンライン家庭教師</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f7f5ef;--chat-bg:#faf9f5;--user-bubble:#4a7c6f;--user-text:#fff;--ai-bubble:#fff;--ai-text:#3a3a3a;--accent:#4a7c6f;--accent-light:#e8f0ed;--accent-hover:#3d6a5e;--border:#e2ddd4;--muted:#9a9487;--header-bg:#4a7c6f;--header-text:#fff;--input-bg:#fff;--shadow:rgba(0,0,0,.06)}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:var(--bg);color:var(--ai-text);-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;background:var(--chat-bg);box-shadow:0 0 40px var(--shadow)}
+header{background:var(--header-bg);color:var(--header-text);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+header .logo{display:flex;align-items:center;gap:10px}
+header .logo-icon{width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+header .logo-icon img{width:100%;height:100%;object-fit:cover}
+header h1{font-size:17px;font-weight:700;letter-spacing:.3px}
+header .subtitle{font-size:10.5px;color:rgba(255,255,255,.75);font-weight:400}
+.usage-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 10px;font-size:10px;color:rgba(255,255,255,.9);white-space:nowrap;cursor:pointer}
+#chat{flex:1;overflow-y:auto;padding:16px 14px 8px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.message{display:flex;margin-bottom:14px;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.message.user{justify-content:flex-end}
+.message.ai{justify-content:flex-start;align-items:flex-start;gap:8px}
+.ai-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-top:2px;border:1.5px solid var(--border)}
+.ai-avatar img{width:100%;height:100%;object-fit:cover}
+.bubble{max-width:78%;padding:11px 15px;border-radius:18px;font-size:14.5px;line-height:1.75;word-break:break-word}
+.message.user .bubble{background:var(--user-bubble);color:var(--user-text);border-bottom-right-radius:4px}
+.message.ai .bubble{background:var(--ai-bubble);color:var(--ai-text);border-bottom-left-radius:4px;box-shadow:0 1px 3px var(--shadow);border:1px solid var(--border)}
+.typing-indicator{display:flex;gap:4px;padding:11px 15px}
+.typing-indicator span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:typing 1.4s infinite}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.usage-warning{background:#fff8e8;border:1px solid #f0d98c;color:#8a6d1b;padding:10px 14px;border-radius:10px;font-size:13px;margin:8px 0;line-height:1.5}
+.usage-warning a{color:var(--accent);text-decoration:underline}
+#input-area{border-top:1px solid var(--border);background:var(--input-bg);flex-shrink:0}
+#input-area form{display:flex;gap:8px;align-items:flex-end;padding:10px 14px 6px}
+#input-area textarea{flex:1;border:1.5px solid var(--border);border-radius:22px;padding:10px 16px;font-size:15px;font-family:inherit;resize:none;outline:none;min-height:44px;max-height:120px;line-height:1.5;background:var(--bg);transition:border-color .2s}
+#input-area textarea:focus{border-color:var(--accent)}
+#input-area button[type="submit"]{width:44px;height:44px;border:none;border-radius:50%;background:var(--accent);color:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .1s}
+#input-area button[type="submit"]:hover{background:var(--accent-hover)}
+#input-area button[type="submit"]:active{transform:scale(.95)}
+#input-area button[type="submit"]:disabled{opacity:.4;cursor:not-allowed}
+.app-footer{padding:8px 14px 4px;text-align:center;background:var(--input-bg)}
+.footer-label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.app-footer a{display:inline-block;color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;padding:6px 16px;border:1.5px solid var(--accent);border-radius:20px;transition:background .2s,color .2s}
+.app-footer a:hover{background:var(--accent);color:#fff}
+.safe-area{padding-bottom:env(safe-area-inset-bottom,0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:400px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal h2{font-size:18px;margin-bottom:16px;color:var(--ai-text)}
+.modal label{display:block;font-size:13px;color:var(--muted);margin-bottom:4px;margin-top:12px}
+.modal input,.modal select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;background:#fff;color:var(--ai-text)}
+.modal input:focus,.modal select:focus{border-color:var(--accent)}
+.modal .btn-row{display:flex;gap:8px;margin-top:20px}
+.modal .btn-row button{flex:1;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-save{background:var(--accent);color:#fff}
+.btn-cancel{background:var(--bg);color:var(--ai-text)}
+.plan-cards{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.plan-card{border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .2s,background .2s}
+.plan-card:hover{border-color:var(--accent);background:var(--accent-light)}
+.plan-card .plan-name{font-weight:700;font-size:15px;color:var(--ai-text)}
+.plan-card .plan-price{font-size:20px;font-weight:700;color:var(--accent);margin:4px 0}
+.plan-card .plan-detail{font-size:12.5px;color:var(--muted);line-height:1.5}
+.plan-card.recommended{border-color:var(--accent);background:var(--accent-light);position:relative}
+.plan-badge{position:absolute;top:-8px;right:12px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px}
+.plan-note{font-size:11.5px;color:var(--muted);margin-top:14px;text-align:center;line-height:1.5}
+#welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;flex:1}
+#welcome .icon-large{width:80px;height:80px;border-radius:50%;overflow:hidden;border:3px solid var(--accent-light);margin-bottom:16px}
+#welcome .icon-large img{width:100%;height:100%;object-fit:cover}
+#welcome h2{font-size:20px;margin-bottom:6px;color:var(--ai-text)}
+#welcome p{color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:16px}
+.quick-questions{display:flex;flex-direction:column;gap:8px;width:100%}
+.quick-q{background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 14px;font-size:13px;text-align:left;cursor:pointer;transition:background .2s,border-color .2s;color:var(--ai-text);line-height:1.5}
+.quick-q:hover{background:var(--accent-light);border-color:var(--accent)}
+.profile-toggle{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;padding:8px 16px;background:var(--accent-light);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--accent);cursor:pointer;width:100%;transition:background .2s}
+.profile-toggle:hover{background:#dce8e3}
+.profile-toggle .arrow{font-size:10px;transition:transform .2s}
+.profile-toggle.open .arrow{transform:rotate(180deg)}
+.profile-panel{display:none;width:100%;margin-top:10px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:12px;text-align:left}
+.profile-panel.open{display:block}
+.profile-panel label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px;margin-top:10px}
+.profile-panel label:first-child{margin-top:0}
+.profile-panel select,.profile-panel input,.profile-panel textarea{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;font-family:inherit;outline:none;background:#fff;color:var(--ai-text)}
+.profile-panel select:focus,.profile-panel input:focus,.profile-panel textarea:focus{border-color:var(--accent)}
+.profile-panel textarea{min-height:50px;resize:vertical;line-height:1.5}
+.profile-panel .other-input{display:none;margin-top:4px}
+.profile-panel .other-input.visible{display:block}
+.profile-saved{display:none;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--accent)}
+.profile-saved.show{display:flex}
+.profile-btn{margin-top:14px;width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+.profile-btn:hover{background:var(--accent-hover)}
+.error-msg{background:#fef0f0;color:#b54a4a;padding:10px 14px;border-radius:10px;font-size:13px;margin:8px 0;border:1px solid #f0d0d0;line-height:1.5}
+.ai-disclaimer{padding:4px 14px 8px;text-align:center;font-size:10.5px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon"><img src="Xx0hOZHH_400x400 (4).jpg" alt="NS"></div>
+      <div><h1>中学受験の国語</h1><div class="subtitle">@オンライン家庭教師</div></div>
+    </div>
+    <div class="usage-badge" id="usage-badge" onclick="openSettings()">残り質問回数 10/10</div>
+  </header>
+  <div id="chat">
+    <div id="welcome">
+      <div class="icon-large"><img src="Xx0hOZHH_400x400 (4).jpg" alt="NS"></div>
+      <h2>ようこそ</h2>
+      <p>中学受験の国語について、<br>何でもご相談ください。</p>
+      <button class="profile-toggle" id="profile-toggle" onclick="toggleProfile()">お子さんの情報を入力する（任意）<span class="arrow">&#9660;</span></button>
+      <div class="profile-panel" id="profile-panel">
+        <label>学年</label>
+        <select id="prof-grade"><option value="">未選択</option><option>小学1年生</option><option>小学2年生</option><option>小学3年生</option><option>小学4年生</option><option>小学5年生</option><option>小学6年生</option></select>
+        <label>偏差値</label>
+        <select id="prof-hensachi"><option value="">未選択</option><option>30未満</option><option>30〜39</option><option>40〜49</option><option>50〜59</option><option>60〜69</option><option>70以上</option></select>
+        <label>通っている塾</label>
+        <select id="prof-juku" onchange="toggleOtherJuku()"><option value="">未選択</option><option>SAPIX（サピックス）</option><option>早稲田アカデミー</option><option>四谷大塚</option><option>日能研</option><option>栄光ゼミナール</option><option>浜学園</option><option>希学園</option><option>通塾していない</option><option value="other">その他</option></select>
+        <input type="text" id="prof-juku-other" class="other-input" placeholder="塾名を入力">
+        <label>苦手な文章の種類</label>
+        <select id="prof-text-type" onchange="toggleOtherText()"><option value="">未選択</option><option>物語文</option><option>説明文</option><option>随筆文</option><option>詩・短歌・俳句</option><option value="other">その他</option></select>
+        <input type="text" id="prof-text-other" class="other-input" placeholder="具体的に入力">
+        <label>苦手な問題のタイプ</label>
+        <select id="prof-q-type" onchange="toggleOtherQ()"><option value="">未選択</option><option>選択肢問題</option><option>書き抜き問題</option><option>記述問題</option><option value="other">その他</option></select>
+        <input type="text" id="prof-q-other" class="other-input" placeholder="具体的に入力">
+        <label>最近悩んでいること（自由記述）</label>
+        <textarea id="prof-worry" placeholder="例：模試のたびに偏差値が10以上ブレます"></textarea>
+        <button class="profile-btn" onclick="saveProfile()">保存する</button>
+        <div class="profile-saved" id="profile-saved">&#10003; 保存しました</div>
+      </div>
+      <div class="quick-questions" style="margin-top:16px">
+        <button class="quick-q" onclick="sendQuickQ(this)">国語の偏差値が安定しません。何から始めればいいですか？</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">記述問題がいつも白紙です。どう練習すればいいですか？</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">テスト直しのやり方を教えてください</button>
+        <button class="quick-q" onclick="sendQuickQ(this)">子どもへの声かけで気をつけることはありますか？</button>
+      </div>
+    </div>
+  </div>
+  <div id="input-area" class="safe-area">
+    <form id="chat-form" onsubmit="handleSubmit(event)">
+      <textarea id="msg-input" rows="1" placeholder="相談内容を入力..." oninput="autoResize(this)" onkeydown="handleKeydown(event)"></textarea>
+      <button type="submit" id="send-btn" aria-label="送信"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </form>
+    <div class="app-footer"><span class="footer-label">中学受験の国語@オンライン家庭教師</span><a href="consultation.html" target="_blank">本人に相談する（30分 5,000円〜）</a></div>
+    <div class="ai-disclaimer">AIによる回答のため、誤りを含む可能性があります。重要な判断の際は、必ず専門家にご確認ください。</div>
+  </div>
+</div>
+<div class="modal-overlay" id="settings-modal"><div class="modal"><h2>API設定</h2><label>Anthropic API Key</label><input type="password" id="api-key-input" placeholder="sk-ant-..."><div class="btn-row"><button class="btn-cancel" onclick="closeSettings()">キャンセル</button><button class="btn-save" onclick="saveSettings()">保存</button></div></div></div>
+<div class="modal-overlay" id="plan-modal"><div class="modal"><h2>もっと相談したい方へ</h2><p style="font-size:13.5px;color:#9a9487;line-height:1.6">無料プランの質問回数を使い切りました。<br>有料プランにすると、もっとたくさん相談できます。</p><div class="plan-cards"><div class="plan-card" onclick="selectPlan('basic')"><div class="plan-name">ベーシック</div><div class="plan-price">月額 680円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">月100回まで質問OK。日常的な学習相談に。</div></div><div class="plan-card recommended" onclick="selectPlan('premium')"><div class="plan-badge">おすすめ</div><div class="plan-name">プレミアム</div><div class="plan-price">月額 1,980円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">月1,000回まで質問OK。受験期のお子さんに。</div></div></div><p class="plan-note">※ 決済機能は現在準備中です</p><div class="btn-row" style="margin-top:12px"><button class="btn-cancel" onclick="closePlanModal()">閉じる</button></div></div></div>
+<div class="modal-overlay" id="consultation-modal"><div class="modal"><h2>NS本人とのオンライン相談</h2><p style="font-size:13.5px;color:#9a9487;line-height:1.6;margin-bottom:12px">お子さんの解いている姿を見ながら、具体的な改善ポイントをお伝えします。Zoom（オンライン）で実施します。</p><div class="plan-cards"><div class="plan-card" onclick="selectConsultation('short')"><div class="plan-name">スポット相談</div><div class="plan-price">30分 5,000円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">今困っていることへのアドバイスがメインです。</div></div><div class="plan-card" onclick="selectConsultation('long')"><div class="plan-name">じっくり相談</div><div class="plan-price">60分 8,800円<span style="font-size:12px;font-weight:400;color:#9a9487">（税込）</span></div><div class="plan-detail">現状分析から、具体的な学習プランのご提案まで行います。</div></div></div><p class="plan-note">※ 申し込みフォームは準備中です</p><div class="btn-row" style="margin-top:12px"><button class="btn-cancel" onclick="closeConsultationModal()">閉じる</button></div></div></div>
+<script src="app.js"></script>
+</body>
+</html>
