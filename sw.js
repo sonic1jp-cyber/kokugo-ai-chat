@@ -1,9 +1,8 @@
-const CACHE_NAME = 'airns-v4';
+const CACHE_NAME = 'airns-v5-beta';
 const ASSETS = [
   '/',
   '/index.html',
   '/app.js',
-  '/consultation.html',
   '/manifest.json'
 ];
 
