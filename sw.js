@@ -1,4 +1,4 @@
-const CACHE_NAME = 'airns-v8-beta';
+const CACHE_NAME = 'airns-v9-beta';
 const ASSETS = [
   '/',
   '/index.html',
