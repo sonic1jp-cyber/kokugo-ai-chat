@@ -23,12 +23,16 @@ body{max-width:520px;margin:0 auto;padding:0 16px}
 .desc{font-size:14px;line-height:1.8;margin-bottom:24px}
 
 .plan-cards{display:flex;flex-direction:column;gap:12px}
-.plan-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px;position:relative;transition:border-color .2s}
-.plan-card:hover{border-color:var(--accent)}
+.plan-card{display:block;background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:20px;position:relative;transition:border-color .2s,transform .15s,box-shadow .2s;color:var(--text);text-decoration:none;cursor:pointer}
+.plan-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 24px rgba(74,124,111,.12)}
+.plan-card:active{transform:translateY(0)}
+.plan-card-arrow{position:absolute;top:50%;right:18px;transform:translateY(-50%);color:var(--accent);font-size:18px;font-weight:700;opacity:.4;transition:opacity .2s,right .2s}
+.plan-card:hover .plan-card-arrow{opacity:1;right:14px}
 .plan-name{font-size:15px;font-weight:700;margin-bottom:4px}
 .plan-price{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:8px}
 .plan-price span{font-size:12px;font-weight:400;color:var(--muted)}
 .plan-detail{font-size:13px;color:var(--muted);line-height:1.6}
+.plan-hint{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;line-height:1.6}
 
 .flow-list{counter-reset:flow}
 .flow-item{display:flex;gap:12px;margin-bottom:16px;font-size:14px;line-height:1.7}
@@ -66,22 +70,25 @@ body{max-width:520px;margin:0 auto;padding:0 16px}
 <div class="section">
   <h2>相談プラン</h2>
   <div class="plan-cards">
-    <div class="plan-card">
+    <a class="plan-card" href="https://docs.google.com/forms/d/e/1FAIpQLSejt58c0Y88FLYKTpWNYJiFYOw2UdSjni1mGQNKMp8lsIbFOg/viewform?usp=pp_url&entry.1592242786=40%E5%88%86%205%2C500%E5%86%86%EF%BC%88%E3%82%B9%E3%83%9D%E3%83%83%E3%83%88%E7%9B%B8%E8%AB%87%EF%BC%89" target="_blank" rel="noopener">
       <div class="plan-name">スポット相談</div>
       <div class="plan-price">40分 5,500円<span>（税込）</span></div>
       <div class="plan-detail">今困っていること1〜2点に絞って、具体的なアドバイスをお伝えします。「まず何をすればいいか」がわかる相談です。</div>
-    </div>
-    <div class="plan-card">
+      <span class="plan-card-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="plan-card" href="https://docs.google.com/forms/d/e/1FAIpQLSejt58c0Y88FLYKTpWNYJiFYOw2UdSjni1mGQNKMp8lsIbFOg/viewform?usp=pp_url&entry.1592242786=60%E5%88%86%207%2C400%E5%86%86%EF%BC%88%E3%81%98%E3%81%A3%E3%81%8F%E3%82%8A%E7%9B%B8%E8%AB%87%EF%BC%89" target="_blank" rel="noopener">
       <div class="plan-name">じっくり相談</div>
       <div class="plan-price">60分 7,400円<span>（税込）</span></div>
       <div class="plan-detail">お子さんの現状を丁寧にヒアリングし、読み方・解き方の課題を特定した上で、今後の学習プランをご提案します。</div>
-    </div>
+      <span class="plan-card-arrow" aria-hidden="true">→</span>
+    </a>
   </div>
+  <div class="plan-hint">※ご希望のプランをタップすると、申し込みフォームに進みます。</div>
 </div>
 
 <div class="section">
   <h2>相談の流れ</h2>
-  <div class="flow-item"><div class="flow-num">1</div><div>下のボタンからお申し込みください。日程の候補をお伝えします。</div></div>
+  <div class="flow-item"><div class="flow-num">1</div><div>ご希望のプランをタップしてお申し込みください。日程の候補をお伝えします。</div></div>
   <div class="flow-item"><div class="flow-num">2</div><div>Zoom（オンライン）で実施します。カメラはオフでも構いません。</div></div>
   <div class="flow-item"><div class="flow-num">3</div><div>お子さんが普段解いている問題用紙やテスト結果があれば、事前に送っていただけると、より具体的なアドバイスができます。</div></div>
 </div>
@@ -94,11 +101,6 @@ body{max-width:520px;margin:0 auto;padding:0 16px}
     <div class="item"><span class="item-label">実績</span>指導生徒数は計数百名。模擬試験の作成にも携わる。</div>
     <div class="item"><span class="item-label">原点</span>自分自身も中学受験で国語に苦しんだ経験があり、「できない側の気持ち」がわかる指導を大切にしています。</div>
   </div>
-</div>
-
-<div class="cta">
-  <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSejt58c0Y88FLYKTpWNYJiFYOw2UdSjni1mGQNKMp8lsIbFOg/viewform" target="_blank">相談を申し込む</a>
-  <div class="cta-note">※ 申し込みフォーム（Googleフォーム）に移動します<br>※ お支払いは相談実施後にご案内します</div>
 </div>
 
 <div class="footer">
